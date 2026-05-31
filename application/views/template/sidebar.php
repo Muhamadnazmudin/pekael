@@ -279,6 +279,10 @@ $sistem_menu = in_array($menu, [
    href="<?= base_url('backup') ?>">
     Backup Database
 </a>
+<a class="collapse-item <?= ($menu == 'users') ? 'active' : '' ?>"
+   href="<?= base_url('users') ?>">
+    Manajemen User
+</a>
 
                 <a class="collapse-item"
                    href="<?= base_url('auth/logout') ?>">

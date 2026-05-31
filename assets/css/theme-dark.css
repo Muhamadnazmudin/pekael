@@ -110,3 +110,44 @@ body.dark-mode .thead-light th {
 	background: #3a3a3a !important;
 	color: #fff !important;
 }
+/* =========================
+   MODAL
+========================= */
+
+.modal-content {
+	background: #ffffff !important;
+	color: #212529 !important;
+}
+
+.modal-header {
+	background: #f8f9fa !important;
+	color: #212529 !important;
+}
+
+.modal-footer {
+	background: #f8f9fa !important;
+}
+
+.modal-content label {
+	color: #212529 !important;
+	font-weight: 600;
+}
+
+.modal-content small {
+	color: #6c757d !important;
+}
+
+.modal-content .form-control {
+	background: #ffffff !important;
+	color: #212529 !important;
+	border: 1px solid #ced4da !important;
+}
+
+.modal-content .form-control:focus {
+	background: #ffffff !important;
+	color: #212529 !important;
+}
+
+.modal-content select {
+	color: #212529 !important;
+}
