@@ -3,10 +3,17 @@
 
 <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
 
-    <!-- Sidebar Toggle -->
-    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-        <i class="fa fa-bars"></i>
-    </button>
+   <!-- Desktop -->
+<button id="sidebarToggle"
+        class="btn btn-link d-none d-md-inline rounded-circle mr-3">
+    <i class="fas fa-bars"></i>
+</button>
+
+<!-- Mobile -->
+<button id="sidebarToggleTop"
+        class="btn btn-link d-md-none rounded-circle mr-3">
+    <i class="fas fa-bars"></i>
+</button>
 
     <!-- Title -->
     <h5 class="ml-3 mt-2 text-gray-600">

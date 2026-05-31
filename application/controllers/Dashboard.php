@@ -187,30 +187,49 @@ $data['belum_dudi'] =
 
     //tampilkan data spesifik
 
-    $data['monitoring_rombel'] = $this->db
+    // ======================
+// MONITORING ROMBEL PKL
+// ======================
+
+$data['monitoring_rombel'] = $this->db
     ->select("
         kelas.id,
         kelas.nama_kelas,
-        COUNT(siswa.id) as total_siswa,
+        COUNT(siswa.id) AS total_siswa,
         SUM(
             CASE
-                WHEN siswa.dudi_id IS NULL OR siswa.dudi_id = 0
+                WHEN siswa.dudi_id IS NULL
+                     OR siswa.dudi_id = 0
                 THEN 1
                 ELSE 0
             END
-        ) as belum_dudi
+        ) AS belum_dudi
     ")
     ->from('kelas')
-    ->join('siswa', 'siswa.id_kelas = kelas.id', 'left')
+    ->join(
+        'siswa',
+        'siswa.id_kelas = kelas.id',
+        'left'
+    )
     ->where('kelas.tingkat', 'XII')
-    ->group_by('kelas.id')
-    ->order_by('belum_dudi', 'DESC')
+    ->where('kelas.status_pkl', 'ya')
+    ->group_by([
+        'kelas.id',
+        'kelas.nama_kelas'
+    ])
+    ->order_by('kelas.id', 'ASC')
     ->get()
     ->result();
-    foreach ($data['monitoring_rombel'] as &$r) {
+
+
+// ======================
+// DAFTAR SISWA BELUM DUDI
+// ======================
+
+foreach ($data['monitoring_rombel'] as &$r) {
 
     $r->siswa_belum_dudi = $this->db
-        ->select('id,nama')
+        ->select('id, nama')
         ->from('siswa')
         ->where('id_kelas', $r->id)
         ->group_start()
@@ -221,6 +240,7 @@ $data['belum_dudi'] =
         ->get()
         ->result();
 }
+unset($r);
 // ======================
 // TOTAL DUDI AKTIF
 // ======================
