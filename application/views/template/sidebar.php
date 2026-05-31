@@ -292,5 +292,18 @@ $sistem_menu = in_array($menu, [
             </div>
         </div>
     </li>
+<li class="nav-item">
 
+    <a class="nav-link"
+       href="<?= base_url('pusatunduhan') ?>">
+
+        <i class="fas fa-download"></i>
+
+        <span>
+            Pusat Unduhan
+        </span>
+
+    </a>
+
+</li>
 </ul>
