@@ -93,7 +93,38 @@
     </div>
 
 </div>
+<div class="d-flex justify-content-end mb-3">
 
+    <form method="get"
+          action="<?= base_url('siswa') ?>">
+
+        <div class="input-group" style="width:350px;">
+
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Cari NISN atau Nama Siswa..."
+                   value="<?= $this->input->get('keyword') ?>">
+
+            <div class="input-group-append">
+
+                <button type="submit"
+                        class="btn btn-primary">
+                    Cari
+                </button>
+
+                <a href="<?= base_url('siswa') ?>"
+                   class="btn btn-secondary">
+                    Reset
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
 <!-- ================= TABEL ================= -->
 <div class="card shadow-sm">
     <div class="card-body">
@@ -113,7 +144,8 @@
                 </thead>
 
                 <tbody>
-                    <?php $no=1; foreach($siswa as $s): ?>
+                    <?php $no = isset($no) ? $no : 1; ?>
+                    <?php foreach($siswa as $s): ?>
                     <tr>
                         <td class="text-center"><?= $no++ ?></td>
                         <td><?= $s->nisn ?></td>
@@ -145,6 +177,8 @@
 
             </table>
         </div>
-
+<div class="mt-3">
+    <?= $pagination ?>
+</div>
     </div>
 </div>
