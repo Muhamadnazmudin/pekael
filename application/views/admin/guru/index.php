@@ -21,6 +21,38 @@
     <i class="fas fa-file-excel"></i>
     Import Excel
 </button>
+<div class="d-flex justify-content-end mb-3">
+
+    <form method="get"
+          action="<?= base_url('guru') ?>">
+
+        <div class="input-group" style="width:350px;">
+
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Cari guru..."
+                   value="<?= $this->input->get('keyword') ?>">
+
+            <div class="input-group-append">
+
+                <button class="btn btn-primary"
+                        type="submit">
+                    Cari
+                </button>
+
+                <a href="<?= base_url('guru') ?>"
+                   class="btn btn-secondary">
+                    Reset
+                </a>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</div>
 <table class="table table-bordered">
 
     <thead>
@@ -37,7 +69,7 @@
 
     <tbody>
 
-    <?php $no=1; ?>
+    <?php $no = isset($no) ? $no : 1; ?>
     <?php foreach($guru as $g): ?>
 
     <tr>
@@ -100,6 +132,9 @@
     </tbody>
 
 </table>
+<div class="mt-3">
+    <?= $pagination ?>
+</div>
 
 <div class="modal fade"
      id="modalImport">
