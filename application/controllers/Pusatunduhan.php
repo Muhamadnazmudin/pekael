@@ -92,16 +92,27 @@ class Pusatunduhan extends CI_Controller {
     }
 
     public function download($id)
-    {
-        $file =
-            $this->unduhan->get($id);
+{
+    $file = $this->unduhan->get($id);
 
-        force_download(
-            './uploads/unduhan/'.
-            $file->file,
-            NULL
-        );
+    if (!$file) {
+        show_404();
     }
+
+    $path = FCPATH . 'uploads/unduhan/' . $file->file;
+
+    if (!file_exists($path)) {
+        show_error('File tidak ditemukan.');
+    }
+
+    header('Content-Description: File Transfer');
+    header('Content-Type: application/octet-stream');
+    header('Content-Disposition: attachment; filename="' . basename($path) . '"');
+    header('Content-Length: ' . filesize($path));
+
+    readfile($path);
+    exit;
+}
 
     public function hapus($id)
     {
