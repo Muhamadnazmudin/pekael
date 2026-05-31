@@ -179,3 +179,26 @@ body.dark-mode .modal-header .close {
 .modal-content {
 	background: rgb(29, 19, 19) !important;
 }
+tfoot tr.total-row {
+	background: #d6d8db !important;
+}
+
+tfoot tr.total-row th,
+tfoot tr.total-row td {
+	color: #000 !important;
+	font-weight: bold;
+}
+.total-over {
+	background: #dc3545 !important;
+	color: #fff !important;
+}
+
+.total-valid {
+	background: #28a745 !important;
+	color: #fff !important;
+}
+
+.total-less {
+	background: #ffc107 !important;
+	color: #000 !important;
+}

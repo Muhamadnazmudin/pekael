@@ -49,7 +49,6 @@ class Pembagianjam extends CI_Controller {
             ->get('guru')
             ->result();
 
-            //ambil kelas
         $data['kelas'] =
     $this->db
     ->where('tingkat','XII')
@@ -57,6 +56,13 @@ class Pembagianjam extends CI_Controller {
     ->order_by('nama_kelas','ASC')
     ->get('kelas')
     ->result();
+
+$data['pengaturan_pkl'] =
+    $this->db
+    ->limit(1)
+    ->get('pengaturan_pkl')
+    ->row();
+    
         template(
             'admin/pembagian_jam/index',
             $data
@@ -267,12 +273,52 @@ class Pembagianjam extends CI_Controller {
     $kelas_id = $this->input->post('kelas_id');
     $jumlah_jam = (int)$this->input->post('jumlah_jam');
 
+    // ambil pengaturan
+    $pengaturan = $this->db
+        ->limit(1)
+        ->get('pengaturan_pkl')
+        ->row();
+
+    $jp_maksimal = (int)$pengaturan->jam_pkl;
+
+    // cek data lama guru-kelas
     $cek = $this->db
         ->where('guru_id', $guru_id)
         ->where('kelas_id', $kelas_id)
         ->get('pembagian_jam')
         ->row();
 
+    // total kelas saat ini
+    $totalKelas = $this->db
+        ->select_sum('jumlah_jam')
+        ->where('kelas_id', $kelas_id)
+        ->get('pembagian_jam')
+        ->row();
+
+    $totalSaatIni = (int)$totalKelas->jumlah_jam;
+
+    $nilaiLama = $cek
+        ? (int)$cek->jumlah_jam
+        : 0;
+
+    $totalBaru =
+        $totalSaatIni
+        - $nilaiLama
+        + $jumlah_jam;
+
+    if($totalBaru > $jp_maksimal){
+
+        echo json_encode([
+            'status' => false,
+            'message' =>
+                'Maaf, total JP kelas tidak boleh lebih dari '
+                .$jp_maksimal
+        ]);
+
+        return;
+    }
+
+    // hapus jika 0
     if($jumlah_jam <= 0){
 
         if($cek){
@@ -289,7 +335,7 @@ class Pembagianjam extends CI_Controller {
         return;
     }
 
-    // cari tahun aktif
+    // tahun aktif
     $tahun = $this->db
         ->where('status','aktif')
         ->get('tahun_ajaran')
@@ -305,6 +351,7 @@ class Pembagianjam extends CI_Controller {
         return;
     }
 
+    // update
     if($cek){
 
         $this->db

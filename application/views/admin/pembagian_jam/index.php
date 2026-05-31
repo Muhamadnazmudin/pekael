@@ -65,7 +65,10 @@ foreach($jam as $j){
         'id' => $j->id
     ];
 }
-
+$jp_maksimal =
+    !empty($pengaturan_pkl)
+    ? (int)$pengaturan_pkl->jam_pkl
+    : 0;
 ?>
 
 <div class="card shadow">
@@ -240,7 +243,7 @@ data-kelas="<?= $k->id ?>">
 
                 <tfoot>
 
-                    <tr class="table-warning">
+                    <tr class="total-row">
 
                         <th colspan="2">
 
@@ -284,9 +287,25 @@ data-kelas="<?= $k->id ?>">
 
                         <th class="text-center">
 
-                            <?= $totalKelas ?>
+<?php
 
-                        </th>
+$class = 'total-less';
+
+if($totalKelas == $jp_maksimal){
+    $class = 'total-valid';
+}elseif($totalKelas > $jp_maksimal){
+    $class = 'total-over';
+}
+
+?>
+
+<span class="badge <?= $class ?>">
+
+    <?= $totalKelas ?>/<?= $jp_maksimal ?>
+
+</span>
+
+</th>
 
                         <?php endforeach; ?>
 
@@ -409,9 +428,15 @@ function(e){
 
                 }else{
 
-                    alert(
-                        data.message
-                    );
+                    Swal.fire({
+    toast: true,
+    position: 'top-end',
+    icon: 'error',
+    title: data.message,
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true
+});
                 }
             }
         );
