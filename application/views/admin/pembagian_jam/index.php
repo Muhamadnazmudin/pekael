@@ -12,6 +12,21 @@
     background:#fff;
     color:#000;
 }
+.matrix-container{
+    max-height: 75vh;
+    overflow: auto;
+}
+
+.matrix-container thead th{
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #3d3d3d !important;
+    color: #fff !important;
+}
+.matrix-container thead th{
+    box-shadow: 0 2px 4px rgba(0,0,0,.3);
+}
     </style>
 <h1 class="h3 mb-4 text-gray-800">
     Pembagian Jam Mengajar
@@ -85,7 +100,7 @@ $jp_maksimal =
 
     <div class="card-body p-0">
 
-        <div class="table-responsive">
+        <div class="table-responsive matrix-container">
 
             <table class="table table-bordered table-hover mb-0">
 
@@ -389,8 +404,8 @@ function(e){
         const jp =
             input.value;
 
-        fetch(
-            "<?= base_url('pembagianjam/update_ajax') ?>",
+       fetch(
+    "<?= site_url('pembagianjam/update_ajax') ?>",
             {
 
                 method:'POST',
