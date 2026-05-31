@@ -123,26 +123,30 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
     <div class="row">
 
         <div class="col-xl-3 col-md-6 mb-4">
-            <div class="card border-left-secondary shadow h-100 py-2">
-                <div class="card-body">
-                    <div class="row no-gutters align-items-center">
-                        <div class="col mr-2">
-                            <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">
-                                Total Rombel XII
-                            </div>
+    <div class="card border-left-secondary shadow h-100 py-2">
+        <div class="card-body">
+            <div class="row no-gutters align-items-center">
 
-                            <div class="h2 font-weight-bold text-gray-100">
-                                <?= $total_rombel_semua ?>
-                            </div>
-                        </div>
+                <div class="col mr-2">
 
-                        <div class="col-auto">
-                            <i class="fas fa-school fa-3x text-gray-400"></i>
-                        </div>
+                    <div class="text-xs font-weight-bold text-secondary text-uppercase mb-2">
+                        Jumlah DUDI
                     </div>
+
+                    <div class="h2 font-weight-bold text-gray-100">
+                        <?= number_format($total_dudi) ?>
+                    </div>
+
                 </div>
+
+                <div class="col-auto">
+                    <i class="fas fa-industry fa-3x text-gray-400"></i>
+                </div>
+
             </div>
         </div>
+    </div>
+</div>
 
         <div class="col-xl-3 col-md-6 mb-4">
             <div class="card border-left-info shadow h-100 py-2">

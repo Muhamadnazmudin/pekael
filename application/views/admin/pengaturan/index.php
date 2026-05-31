@@ -1,4 +1,4 @@
-<h3>Pengaturan Sistem</h3>
+<!-- <h3>Pengaturan Sistem</h3>
 
 <form method="post"
       action="<?= base_url('pengaturan/update') ?>">
@@ -175,6 +175,80 @@
         type="submit"
         class="btn btn-primary">
 
+        Simpan Perubahan
+
+    </button>
+
+</div>
+
+</form> -->
+
+<h3 class="mb-4">Pengaturan Sistem</h3>
+
+<form method="post"
+      action="<?= base_url('pengaturan/update') ?>">
+
+<?php foreach($pengaturan as $p): ?>
+
+    <?php if($p->nama_pengaturan == 'tema_aplikasi'): ?>
+
+        <div class="card shadow">
+
+            <div class="card-body">
+
+                <div class="form-group mb-0">
+
+                    <label class="font-weight-bold">
+                        Tema Aplikasi
+                    </label>
+
+                    <select
+                        name="<?= $p->nama_pengaturan ?>"
+                        class="form-control">
+
+                        <option
+                            value="light"
+                            <?= $p->value == 'light'
+                                ? 'selected'
+                                : '' ?>>
+
+                            Tema Terang
+
+                        </option>
+
+                        <option
+                            value="dark"
+                            <?= $p->value == 'dark'
+                                ? 'selected'
+                                : '' ?>>
+
+                            Tema Gelap
+
+                        </option>
+
+                    </select>
+
+                    <small class="text-muted">
+                        Pilih tema tampilan aplikasi.
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    <?php endif; ?>
+
+<?php endforeach; ?>
+
+<div class="mt-3">
+
+    <button
+        type="submit"
+        class="btn btn-primary">
+
+        <i class="fas fa-save"></i>
         Simpan Perubahan
 
     </button>

@@ -221,7 +221,12 @@ $data['belum_dudi'] =
         ->get()
         ->result();
 }
-
+// ======================
+// TOTAL DUDI AKTIF
+// ======================
+$data['total_dudi'] = $this->db
+    ->where('status_kerjasama', 'aktif')
+    ->count_all_results('dudi');
         // ======================
         // LOAD VIEW
         // ======================
