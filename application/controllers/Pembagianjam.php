@@ -49,6 +49,14 @@ class Pembagianjam extends CI_Controller {
             ->get('guru')
             ->result();
 
+            //ambil kelas
+        $data['kelas'] =
+    $this->db
+    ->where('tingkat','XII')
+    ->where('status_pkl','ya')
+    ->order_by('nama_kelas','ASC')
+    ->get('kelas')
+    ->result();
         template(
             'admin/pembagian_jam/index',
             $data
@@ -253,4 +261,77 @@ class Pembagianjam extends CI_Controller {
             'pembagianjam'
         );
     }
+    public function update_ajax()
+{
+    $guru_id = $this->input->post('guru_id');
+    $kelas_id = $this->input->post('kelas_id');
+    $jumlah_jam = (int)$this->input->post('jumlah_jam');
+
+    $cek = $this->db
+        ->where('guru_id', $guru_id)
+        ->where('kelas_id', $kelas_id)
+        ->get('pembagian_jam')
+        ->row();
+
+    if($jumlah_jam <= 0){
+
+        if($cek){
+
+            $this->db
+                ->where('id', $cek->id)
+                ->delete('pembagian_jam');
+        }
+
+        echo json_encode([
+            'status' => true
+        ]);
+
+        return;
+    }
+
+    // cari tahun aktif
+    $tahun = $this->db
+        ->where('status','aktif')
+        ->get('tahun_ajaran')
+        ->row();
+
+    if(!$tahun){
+
+        echo json_encode([
+            'status' => false,
+            'message' => 'Tahun aktif tidak ditemukan'
+        ]);
+
+        return;
+    }
+
+    if($cek){
+
+        $this->db
+            ->where('id',$cek->id)
+            ->update(
+                'pembagian_jam',
+                [
+                    'jumlah_jam' => $jumlah_jam
+                ]
+            );
+
+    }else{
+
+        $this->db
+            ->insert(
+                'pembagian_jam',
+                [
+                    'guru_id'    => $guru_id,
+                    'kelas_id'   => $kelas_id,
+                    'tahun_id'   => $tahun->id,
+                    'jumlah_jam' => $jumlah_jam
+                ]
+            );
+    }
+
+    echo json_encode([
+        'status' => true
+    ]);
+}
 }

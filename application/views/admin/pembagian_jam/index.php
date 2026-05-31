@@ -1,31 +1,43 @@
+<style>
+   .edit-input{
+    width:55px;
+    height:35px;
+    padding:0;
+    margin:auto;
+    text-align:center;
+    font-size:18px;
+    font-weight:bold;
+    border:2px solid #4e73df;
+    border-radius:4px;
+    background:#fff;
+    color:#000;
+}
+    </style>
+<h1 class="h3 mb-4 text-gray-800">
+    Pembagian Jam Mengajar
+</h1>
+
 <div class="d-flex justify-content-between mb-3">
 
-    <a href="<?= base_url(
-        'pembagianjam/tambah'
-    ) ?>"
-    class="btn btn-primary">
+    <a href="<?= base_url('pembagianjam/tambah') ?>"
+       class="btn btn-primary">
 
         <i class="fas fa-plus"></i>
-
         Tambah Pembagian Jam
 
     </a>
 
 </div>
-<?php if(
-    $this->session
-    ->flashdata('success')
-): ?>
+
+<?php if($this->session->flashdata('success')): ?>
 
 <div class="alert alert-success alert-dismissible fade show">
 
-    <?= $this->session
-    ->flashdata('success') ?>
+    <?= $this->session->flashdata('success') ?>
 
-    <button
-        type="button"
-        class="close"
-        data-dismiss="alert">
+    <button type="button"
+            class="close"
+            data-dismiss="alert">
 
         <span>&times;</span>
 
@@ -36,135 +48,43 @@
 <?php endif; ?>
 
 
-<style>
-.card-header button{
-    border-radius:0;
-}
-
-.form-inline-row{
-    background:#f8f9fc;
-}
-
-.form-inline-row td{
-    vertical-align: middle;
-}
-</style>
-
-
-<h1 class="h3 mb-4 text-gray-800">
-    Pembagian Jam
-</h1>
-
-
 <?php
 
-$group = [];
+$matrix = [];
 
 foreach($jam as $j){
 
-    $group[
-        $j->nama_kelas
-    ][] = $j;
+    $matrix[
+        $j->guru_id
+    ][
+        $j->kelas_id
+    ] = [
+
+        'jam' => $j->jumlah_jam,
+
+        'id' => $j->id
+    ];
 }
 
-$jp_wajib =
-    !empty($jam)
-    ? $jam[0]->jp
-    : 46;
-
 ?>
 
+<div class="card shadow">
 
-<div class="accordion"
-     id="accordionJam">
+    <div class="card-header">
 
-<?php
-$no_group = 1;
+        <h6 class="m-0 font-weight-bold text-primary">
 
-foreach(
-    $group
-    as $kelas => $rows
-):
+            Matriks Pembagian Jam Mengajar
 
-$total_jam =
-    array_sum(
-        array_column(
-            $rows,
-            'jumlah_jam'
-        )
-    );
-
-$valid =
-    $total_jam ==
-    $jp_wajib;
-
-$kelas_id =
-    $rows[0]->kelas_id;
-?>
-
-<div class="card shadow-sm border-0 mb-3">
-
-    <div class="card-header bg-white p-0">
-
-        <button
-            class="btn btn-light
-                   btn-block
-                   text-left
-                   p-3
-                   font-weight-bold"
-
-            type="button"
-
-            data-toggle="collapse"
-
-            data-target="#collapse<?= $no_group ?>">
-
-            <i class="fas fa-school mr-2"></i>
-
-            <?= $kelas ?>
-
-            <span class="badge badge-primary ml-2">
-
-                <?= $total_jam ?>
-
-                JP
-
-            </span>
-
-            <?php if($valid): ?>
-
-                <span class="badge badge-success ml-2">
-
-                    Valid
-
-                </span>
-
-            <?php else: ?>
-
-                <span class="badge badge-danger ml-2">
-
-                    <?= $total_jam ?>
-                    /
-                    <?= $jp_wajib ?>
-
-                    JP
-
-                </span>
-
-            <?php endif; ?>
-
-        </button>
+        </h6>
 
     </div>
 
-
-    <div id="collapse<?= $no_group ?>"
-         class="collapse"
-         data-parent="#accordionJam">
+    <div class="card-body p-0">
 
         <div class="table-responsive">
 
-            <table class="table table-bordered mb-0">
+            <table class="table table-bordered table-hover mb-0">
 
                 <thead class="thead-light">
 
@@ -174,24 +94,25 @@ $kelas_id =
                             No
                         </th>
 
-                        <th>
-                            Guru
+                        <th width="250">
+                            Nama Guru
                         </th>
 
-                        <th>
-                            Jurusan
+                        <?php foreach($kelas as $k): ?>
+
+                        <th class="text-center">
+
+                            <?= $k->nama_kelas ?>
+
                         </th>
 
-                        <th width="120">
-                            Jam
-                        </th>
+                        <?php endforeach; ?>
 
-                        <th>
-                            Tahun
-                        </th>
+                        <th width="100"
+                            class="text-center">
 
-                        <th width="140">
-                            Aksi
+                            Total
+
                         </th>
 
                     </tr>
@@ -201,58 +122,113 @@ $kelas_id =
                 <tbody>
 
                 <?php
+
                 $no = 1;
 
-                foreach(
-                    $rows
-                    as $j
-                ):
+                foreach($guru as $g):
+
+                    $totalGuru = 0;
+
                 ?>
 
                 <tr>
 
                     <td>
+
                         <?= $no++ ?>
-                    </td>
-
-                    <td>
-                        <?= $j->nama_guru ?>
-                    </td>
-
-                    <td>
-                        <?= $j->singkatan ?>
-                    </td>
-
-                    <td>
-
-                        <span class="badge badge-info">
-
-                            <?= $j->jumlah_jam ?>
-
-                            JP
-
-                        </span>
 
                     </td>
 
                     <td>
-                        <?= $j->tahun ?>
+
+                        <strong>
+
+                            <?= $g->nama_guru ?>
+
+                        </strong>
+
                     </td>
 
-                    <td>
+                    <?php foreach($kelas as $k): ?>
+
+                    <td class="text-center">
+
+                    <?php
+
+                    if(
+                        isset(
+                            $matrix[
+                                $g->id
+                            ][
+                                $k->id
+                            ]
+                        )
+                    ):
+
+                        $dataJam =
+                            $matrix[
+                                $g->id
+                            ][
+                                $k->id
+                            ];
+
+                        $totalGuru +=
+                            $dataJam['jam'];
+
+                    ?>
+
+                       <span
+class="editable-cell badge badge-info"
+
+data-guru="<?= $g->id ?>"
+
+data-kelas="<?= $k->id ?>">
+
+<?= $dataJam['jam'] ?>
+
+</span>
+
+                        <br>
 
                         <a href="<?= base_url(
                             'pembagianjam/hapus/'
-                            .$j->id
+                            .$dataJam['id']
                         ) ?>"
 
-                        class="btn btn-danger btn-sm"
+                        onclick="
+                            return confirm(
+                                'Hapus data?'
+                            )
+                        "
 
-                        onclick="return confirm('Hapus data?')">
+                        class="text-danger">
 
-                            Hapus
+                            <i class="fas fa-times"></i>
 
                         </a>
+
+                    <?php else: ?>
+
+                        <span
+class="editable-cell text-primary font-weight-bold"
+
+data-guru="<?= $g->id ?>"
+
+data-kelas="<?= $k->id ?>">
+
++
+
+</span>
+
+                    <?php endif; ?>
+
+                    </td>
+
+                    <?php endforeach; ?>
+
+                    <td class="text-center font-weight-bold">
+
+                        <?= $totalGuru ?>
 
                     </td>
 
@@ -260,356 +236,204 @@ $kelas_id =
 
                 <?php endforeach; ?>
 
-
-                <!-- FORM INLINE -->
-                <tr
-                    id="form<?= $kelas_id ?>"
-                    class="form-inline-row"
-                    style="display:none;">
-
-                    <td>
-                        +
-                    </td>
-
-                    <td>
-
-                        <select
-                            class="form-control guru_id">
-
-                            <option value="">
-                                -- pilih guru --
-                            </option>
-
-                            <?php foreach(
-                                $guru
-                                as $g
-                            ): ?>
-
-                            <option
-                                value="<?= $g->id ?>">
-
-                                <?= $g->nama_guru ?>
-
-                            </option>
-
-                            <?php endforeach; ?>
-
-                        </select>
-
-                    </td>
-
-                    <td>
-                        <?= $rows[0]->singkatan ?>
-                    </td>
-
-                    <td>
-
-                        <input
-                            type="number"
-
-                            class="form-control jumlah_jam"
-
-                            min="1"
-
-                            placeholder="JP">
-
-                    </td>
-
-                    <td>
-                        <?= $rows[0]->tahun ?>
-                    </td>
-
-                    <td>
-
-                        <button
-                            type="button"
-
-                            class="btn btn-success btn-sm btnSimpanJam"
-
-                            data-kelas="<?= $kelas_id ?>">
-
-                            Simpan
-
-                        </button>
-
-                    </td>
-
-                </tr>
-
                 </tbody>
 
+                <tfoot>
+
+                    <tr class="table-warning">
+
+                        <th colspan="2">
+
+                            Total Kelas
+
+                        </th>
+
+                        <?php
+
+                        $grandTotal = 0;
+
+                        foreach($kelas as $k):
+
+                            $totalKelas = 0;
+
+                            foreach($guru as $g){
+
+                                if(
+                                    isset(
+                                        $matrix[
+                                            $g->id
+                                        ][
+                                            $k->id
+                                        ]
+                                    )
+                                ){
+
+                                    $totalKelas +=
+                                        $matrix[
+                                            $g->id
+                                        ][
+                                            $k->id
+                                        ]['jam'];
+                                }
+                            }
+
+                            $grandTotal +=
+                                $totalKelas;
+
+                        ?>
+
+                        <th class="text-center">
+
+                            <?= $totalKelas ?>
+
+                        </th>
+
+                        <?php endforeach; ?>
+
+                        <th class="text-center">
+
+                            <?= $grandTotal ?>
+
+                        </th>
+
+                    </tr>
+
+                </tfoot>
+
             </table>
-
-        </div>
-
-
-        <div class="card-footer bg-light text-right">
-
-            <button
-                type="button"
-
-                class="btn btn-primary btn-sm btnTambahGuru"
-
-                data-target="#form<?= $kelas_id ?>">
-
-                <i class="fas fa-plus"></i>
-
-                Tambah Guru ke
-                <?= $kelas ?>
-
-            </button>
 
         </div>
 
     </div>
 
 </div>
-
-<?php
-$no_group++;
-endforeach;
-?>
-
-</div>
-
-
-
 <script>
+
 document.addEventListener(
-    'DOMContentLoaded',
-    function(){
+'click',
+function(e){
 
-        // tombol tambah guru
-        document
-        .querySelectorAll(
-            '.btnTambahGuru'
+    if(
+        !e.target.classList.contains(
+            'editable-cell'
         )
-        .forEach(function(btn){
-
-            btn.addEventListener(
-                'click',
-                function(){
-
-                    const target =
-                        this.dataset
-                        .target;
-
-                    const row =
-                        document
-                        .querySelector(
-                            target
-                        );
-
-                    if(
-                        row.style.display
-                        === 'none'
-                    ){
-
-                        row.style.display =
-                            'table-row';
-
-                    }else{
-
-                        row.style.display =
-                            'none';
-                    }
-                }
-            );
-
-        });
-
-
-        // tombol simpan
-        document
-        .querySelectorAll(
-            '.btnSimpanJam'
-        )
-        .forEach(function(btn){
-
-            btn.addEventListener(
-                'click',
-                function(){
-
-                    const row =
-                        this.closest(
-                            'tr'
-                        );
-
-                    const kelas_id =
-                        this.dataset
-                        .kelas;
-
-                    const guru_id =
-                        row
-                        .querySelector(
-                            '.guru_id'
-                        )
-                        .value;
-
-                    const jumlah_jam =
-                        row
-                        .querySelector(
-                            '.jumlah_jam'
-                        )
-                        .value;
-
-
-                    if(!guru_id){
-
-                        alert(
-                            'Pilih guru dulu'
-                        );
-
-                        return;
-                    }
-
-                    if(
-                        !jumlah_jam
-                        ||
-                        jumlah_jam <= 0
-                    ){
-
-                        alert(
-                            'Isi jumlah jam'
-                        );
-
-                        return;
-                    }
-
-
-                    this.disabled =
-                        true;
-
-                    this.innerHTML =
-                        'Menyimpan...';
-
-
-                    fetch(
-                        "<?= base_url(
-                            'pembagianjam/simpan_ajax'
-                        ) ?>",
-                        {
-
-                            method:
-                                'POST',
-
-                            headers:{
-                                'Content-Type':
-                                'application/x-www-form-urlencoded'
-                            },
-
-                            body:
-                                new URLSearchParams({
-
-                                    kelas_id:
-                                        kelas_id,
-
-                                    guru_id:
-                                        guru_id,
-
-                                    jumlah_jam:
-                                        jumlah_jam
-                                })
-                        }
-                    )
-
-                    .then(
-                        response =>
-                        response.json()
-                    )
-
-                    .then(
-    data => {
-
-        console.log(data);
-
-        if(
-    data.status
-){
-
-    // simpan rombel terakhir
-    localStorage.setItem(
-        'openCollapse',
-        '#collapse' + kelas_id
-    );
-
-    localStorage.setItem(
-        'openForm',
-        '#form' + kelas_id
-    );
-
-    location.reload();
-
-}else{
-
-            alert(
-                data.message
-                ||
-                'Gagal simpan'
-            );
-        }
+    ){
+        return;
     }
-)
 
-                    .catch(
-                        error => {
+    const cell = e.target;
 
-                            alert(
-                                'Terjadi kesalahan server'
-                            );
+    const guru =
+        cell.dataset.guru;
 
-                            console.error(
-                                error
-                            );
-                        }
+    const kelas =
+        cell.dataset.kelas;
+
+    let nilai =
+        cell.innerText.trim();
+
+    if(
+        nilai === '+'
+    ){
+        nilai = '';
+    }
+
+    const input =
+        document.createElement(
+            'input'
+        );
+
+    input.type =
+        'number';
+
+    input.min =
+        0;
+
+    input.className =
+    'edit-input';
+
+    input.value =
+        nilai;
+
+    cell.innerHTML =
+        '';
+
+    cell.appendChild(
+        input
+    );
+
+    input.focus();
+    input.select();
+
+    function simpan(){
+
+        const jp =
+            input.value;
+
+        fetch(
+            "<?= base_url('pembagianjam/update_ajax') ?>",
+            {
+
+                method:'POST',
+
+                headers:{
+                    'Content-Type':
+                    'application/x-www-form-urlencoded'
+                },
+
+                body:
+                new URLSearchParams({
+
+                    guru_id:
+                        guru,
+
+                    kelas_id:
+                        kelas,
+
+                    jumlah_jam:
+                        jp
+                })
+            }
+        )
+        .then(
+            r => r.json()
+        )
+        .then(
+            data => {
+
+                if(
+                    data.status
+                ){
+
+                    location.reload();
+
+                }else{
+
+                    alert(
+                        data.message
                     );
-
                 }
-            );
-
-        });
-
+            }
+        );
     }
-);
-// buka kembali accordion terakhir
-const openCollapse =
-    localStorage.getItem(
-        'openCollapse'
+
+    input.addEventListener(
+        'blur',
+        simpan
     );
 
-if(openCollapse){
+    input.addEventListener(
+        'keydown',
+        function(e){
 
-    const collapseEl =
-        document.querySelector(
-            openCollapse
-        );
+            if(
+                e.key === 'Enter'
+            ){
 
-    if(collapseEl){
-
-        collapseEl.classList.add(
-            'show'
-        );
-    }
-}
-
-
-// tampilkan form terakhir
-const openForm =
-    localStorage.getItem(
-        'openForm'
+                simpan();
+            }
+        }
     );
+});
 
-if(openForm){
-
-    const formEl =
-        document.querySelector(
-            openForm
-        );
-
-    if(formEl){
-
-        formEl.style.display =
-            'table-row';
-    }
-}
 </script>
