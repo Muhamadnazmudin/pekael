@@ -137,6 +137,90 @@ class Dashboard extends CI_Controller {
             $koef
             ? $koef->koefisien
             : 0;
+        // ======================
+// SISWA BELUM DAPAT
+// PEMBIMBING
+// ======================
+$data['belum_pembimbing'] =
+    $this->db
+    ->select('COUNT(*) as total')
+    ->from('siswa')
+    ->join(
+        'kelas',
+        'kelas.id = siswa.id_kelas'
+    )
+    ->join(
+        'distribusi_pkl',
+        'distribusi_pkl.siswa_id = siswa.id',
+        'left'
+    )
+    ->where('kelas.tingkat', 'XII')
+    ->where('kelas.status_pkl', 'ya')
+    ->where('distribusi_pkl.id IS NULL', null, false)
+    ->get()
+    ->row()
+    ->total;
+    // ======================
+// TOTAL ROMBEL XII
+// ======================
+$data['total_rombel_semua'] =
+    $this->db
+    ->where('tingkat', 'XII')
+    ->count_all_results('kelas');
+    // ======================
+// SISWA BELUM DAPAT DUDI
+// ======================
+$data['belum_dudi'] =
+    $this->db
+    ->join(
+        'kelas',
+        'kelas.id = siswa.id_kelas'
+    )
+    ->where('kelas.tingkat', 'XII')
+    ->where('kelas.status_pkl', 'ya')
+    ->group_start()
+        ->where('siswa.dudi_id IS NULL', null, false)
+        ->or_where('siswa.dudi_id', 0)
+    ->group_end()
+    ->count_all_results('siswa');
+
+
+    //tampilkan data spesifik
+
+    $data['monitoring_rombel'] = $this->db
+    ->select("
+        kelas.id,
+        kelas.nama_kelas,
+        COUNT(siswa.id) as total_siswa,
+        SUM(
+            CASE
+                WHEN siswa.dudi_id IS NULL OR siswa.dudi_id = 0
+                THEN 1
+                ELSE 0
+            END
+        ) as belum_dudi
+    ")
+    ->from('kelas')
+    ->join('siswa', 'siswa.id_kelas = kelas.id', 'left')
+    ->where('kelas.tingkat', 'XII')
+    ->group_by('kelas.id')
+    ->order_by('belum_dudi', 'DESC')
+    ->get()
+    ->result();
+    foreach ($data['monitoring_rombel'] as &$r) {
+
+    $r->siswa_belum_dudi = $this->db
+        ->select('id,nama')
+        ->from('siswa')
+        ->where('id_kelas', $r->id)
+        ->group_start()
+            ->where('dudi_id IS NULL', null, false)
+            ->or_where('dudi_id', 0)
+        ->group_end()
+        ->order_by('nama', 'ASC')
+        ->get()
+        ->result();
+}
 
         // ======================
         // LOAD VIEW
