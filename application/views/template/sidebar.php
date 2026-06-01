@@ -27,7 +27,7 @@ $pkl_menu = in_array($menu, [
 ]);
 
 $distribusi_menu = in_array($menu, [
-    'distribusi',
+    'distribusi_proporsional',
     'distribusimanual'
 ]);
 
@@ -174,10 +174,10 @@ $sistem_menu = in_array($menu, [
                    href="<?= base_url('pembimbing') ?>">
                     Pembimbing PKL
                 </a>
-                <!-- <a class="collapse-item <?= ($menu == 'pembimbingkelas') ? 'active' : '' ?>"
+                <a class="collapse-item <?= ($menu == 'pembimbingkelas') ? 'active' : '' ?>"
    href="<?= base_url('pembimbingkelas') ?>">
     Pembimbing PKL Per Kelas
-</a> -->
+</a>
             </div>
         </div>
     </li>
@@ -196,23 +196,24 @@ $sistem_menu = in_array($menu, [
         </a>
 
         <div id="distribusiMenu"
-             class="collapse <?= $distribusi_menu ? 'show' : '' ?>"
-             data-parent="#accordionSidebar">
+     class="collapse <?= $distribusi_menu ? 'show' : '' ?>"
+     data-parent="#accordionSidebar">
 
-            <div class="bg-white py-2 collapse-inner rounded">
+    <div class="bg-white py-2 collapse-inner rounded">
 
-                <a class="collapse-item <?= ($menu == 'distribusi') ? 'active' : '' ?>"
-                   href="<?= base_url('distribusi') ?>">
-                    Distribusi Otomatis
-                </a>
+        <a class="collapse-item <?= ($menu == 'distribusimanual') ? 'active' : '' ?>"
+           href="<?= base_url('distribusimanual') ?>">
+            Distribusi Juknis
+        </a>
 
-                <a class="collapse-item <?= ($menu == 'distribusimanual') ? 'active' : '' ?>"
-                   href="<?= base_url('distribusimanual') ?>">
-                    Distribusi Manual
-                </a>
+        <a class="collapse-item <?= ($menu == 'distribusi_proporsional') ? 'active' : '' ?>"
+           href="<?= base_url('distribusi_proporsional') ?>">
+            Distribusi Proporsional
+        </a>
 
-            </div>
-        </div>
+    </div>
+
+</div>
     </li>
 
     <hr class="sidebar-divider">

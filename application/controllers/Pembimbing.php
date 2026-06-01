@@ -303,15 +303,30 @@ if(
 
         // bulat bawah dulu
         $jumlah =
-            floor(
-                $hasil
-            );
+    round(
+        $hasil
+    );
 
-        // simpan pecahan
-        $desimal =
-            $hasil
-            -
-            $jumlah;
+$desimal =
+    $hasil
+    -
+    floor($hasil);
+            if($g->total_jam >= 20){
+
+    $bobot = 3;
+
+}elseif($g->total_jam >= 10){
+
+    $bobot = 2;
+
+}elseif($g->total_jam >= 5){
+
+    $bobot = 1;
+
+}else{
+
+    $bobot = 0;
+}
 
         $data_generate[] = [
 
@@ -335,7 +350,10 @@ if(
                 $jumlah,
 
             'desimal' =>
-                $desimal
+    $desimal,
+
+'bobot' =>
+    $bobot
         ];
 
         $total_awal +=
@@ -352,16 +370,43 @@ if(
 
     // pecahan terbesar
     usort(
-        $data_generate,
+    $data_generate,
 
-        function($a, $b){
+    function($a, $b){
+
+        // bobot lebih tinggi dulu
+        if(
+            $a['bobot']
+            !=
+            $b['bobot']
+        ){
 
             return
-                $b['desimal']
+                $b['bobot']
                 <=>
-                $a['desimal'];
+                $a['bobot'];
         }
-    );
+
+        // lalu jam terbesar
+        if(
+            $a['total_jam']
+            !=
+            $b['total_jam']
+        ){
+
+            return
+                $b['total_jam']
+                <=>
+                $a['total_jam'];
+        }
+
+        // terakhir pecahan
+        return
+            $b['desimal']
+            <=>
+            $a['desimal'];
+    }
+);
 
     // ======================
     // BAGI SISA
@@ -370,21 +415,23 @@ if(
 
     while($sisa > 0){
 
-        if(
-            !isset(
-                $data_generate[$i]
-            )
-        ){
+    foreach($data_generate as $k => $g){
 
-            $i = 0;
+        // hanya guru >= 5 jam
+        if($g['total_jam'] < 5){
+            continue;
         }
 
-        $data_generate[$i]
+        $data_generate[$k]
         ['jumlah_bimbingan']++;
 
         $sisa--;
-        $i++;
+
+        if($sisa <= 0){
+            break 2;
+        }
     }
+}
 
     // ======================
     // INSERT DB
@@ -395,9 +442,12 @@ if(
     ){
 
         unset(
-            $d['desimal']
-        );
+    $d['desimal']
+);
 
+unset(
+    $d['bobot']
+);
         $this->db
         ->insert(
             'pembimbing_pkl',
