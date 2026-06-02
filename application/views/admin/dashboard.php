@@ -249,6 +249,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                 <th>Rombel</th>
                                 <th width="140">Total Siswa</th>
                                 <th width="180">Belum Dapat DUDI</th>
+                                <th width="180">Belum Dapat Pembimbing</th>
                                 <th width="220">Progress</th>
                                 <th width="140">Status</th>
                             </tr>
@@ -260,7 +261,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                             <?php if(empty($monitoring_rombel)): ?>
 
                                 <tr>
-                                    <td colspan="6" class="text-center text-muted py-4">
+                                    <td colspan="7" class="text-center text-muted py-4">
                                         Tidak ada data
                                     </td>
                                 </tr>
@@ -321,7 +322,29 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                             <?php endif; ?>
 
                                         </td>
+                                                        <td>
 
+    <?php if($r->belum_pembimbing > 0): ?>
+
+        <button
+            class="btn btn-sm btn-warning"
+            data-toggle="modal"
+            data-target="#modalPembimbing<?= $r->id ?>">
+
+            <i class="fas fa-user-tie"></i>
+            <?= $r->belum_pembimbing ?>
+
+        </button>
+
+    <?php else: ?>
+
+        <span class="badge badge-success px-3 py-2">
+            0
+        </span>
+
+    <?php endif; ?>
+
+</td>
                                         <td>
 
                                             <div class="progress">
@@ -456,3 +479,76 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
     </div>
 
 </div>
+<?php foreach($monitoring_rombel as $r): ?>
+
+<div class="modal fade"
+     id="modalPembimbing<?= $r->id ?>"
+     tabindex="-1">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title">
+                    <?= $r->nama_kelas ?>
+                </h5>
+
+                <button type="button"
+                        class="close"
+                        data-dismiss="modal">
+
+                    <span>&times;</span>
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+    
+                <?php if(count($r->siswa_belum_pembimbing) == 0): ?>
+
+                    <div class="alert alert-success mb-0">
+                        Semua siswa sudah mendapatkan pembimbing.
+                    </div>
+
+                <?php else: ?>
+
+                    <table class="table table-striped table-sm">
+
+                        <thead>
+                            <tr>
+                                <th width="60">No</th>
+                                <th>Nama Siswa</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            <?php $no = 1; ?>
+
+                            <?php foreach($r->siswa_belum_pembimbing as $s): ?>
+
+                                <tr>
+                                    <td><?= $no++ ?></td>
+                                    <td><?= $s->nama ?></td>
+                                </tr>
+
+                            <?php endforeach; ?>
+
+                        </tbody>
+
+                    </table>
+
+                <?php endif; ?>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<?php endforeach; ?>

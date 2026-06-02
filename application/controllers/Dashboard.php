@@ -150,13 +150,13 @@ $data['belum_pembimbing'] =
         'kelas.id = siswa.id_kelas'
     )
     ->join(
-        'distribusi_pkl',
-        'distribusi_pkl.siswa_id = siswa.id',
+        'distribusi_manual',
+        'distribusi_manual.siswa_id = siswa.id',
         'left'
     )
     ->where('kelas.tingkat', 'XII')
     ->where('kelas.status_pkl', 'ya')
-    ->where('distribusi_pkl.id IS NULL', null, false)
+    ->where('distribusi_manual.id IS NULL', null, false)
     ->get()
     ->row()
     ->total;
@@ -195,7 +195,8 @@ $data['monitoring_rombel'] = $this->db
     ->select("
         kelas.id,
         kelas.nama_kelas,
-        COUNT(siswa.id) AS total_siswa,
+        COUNT(DISTINCT siswa.id) AS total_siswa,
+
         SUM(
             CASE
                 WHEN siswa.dudi_id IS NULL
@@ -203,12 +204,25 @@ $data['monitoring_rombel'] = $this->db
                 THEN 1
                 ELSE 0
             END
-        ) AS belum_dudi
+        ) AS belum_dudi,
+
+        SUM(
+            CASE
+                WHEN distribusi_manual.id IS NULL
+                THEN 1
+                ELSE 0
+            END
+        ) AS belum_pembimbing
     ")
     ->from('kelas')
     ->join(
         'siswa',
         'siswa.id_kelas = kelas.id',
+        'left'
+    )
+    ->join(
+        'distribusi_manual',
+        'distribusi_manual.siswa_id = siswa.id',
         'left'
     )
     ->where('kelas.tingkat', 'XII')
@@ -239,7 +253,22 @@ foreach ($data['monitoring_rombel'] as &$r) {
         ->order_by('nama', 'ASC')
         ->get()
         ->result();
+
+    $r->siswa_belum_pembimbing = $this->db
+        ->select('siswa.id, siswa.nama')
+        ->from('siswa')
+        ->join(
+            'distribusi_manual',
+            'distribusi_manual.siswa_id = siswa.id',
+            'left'
+        )
+        ->where('siswa.id_kelas', $r->id)
+        ->where('distribusi_manual.id IS NULL', null, false)
+        ->order_by('siswa.nama', 'ASC')
+        ->get()
+        ->result();
 }
+
 unset($r);
 // ======================
 // TOTAL DUDI AKTIF

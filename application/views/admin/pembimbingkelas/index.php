@@ -267,7 +267,7 @@ foreach(
                         <th>Guru</th>
                         <th>NIP</th>
                         <th>Total Jam</th>
-                        <th>Koefisien</th>
+                        <th>Jam PKL</th>
                         <th>Jumlah Siswa</th>
                         <th>Tahun</th>
 
