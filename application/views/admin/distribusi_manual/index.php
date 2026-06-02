@@ -1,317 +1,189 @@
+
 <h1 class="h3 mb-4 text-gray-800">
     Distribusi Manual
 </h1>
 
-<div class="card shadow-sm border-0">
+<div class="alert alert-info">
+    <i class="fa fa-info-circle"></i>
+    Mapping siswa dilakukan secara manual berdasarkan
+    kuota pembimbing yang telah digenerate pada menu
+    Pembimbing (Koef).
+</div>
 
-    <div class="card-header bg-white">
+<div class="card shadow">
 
-        <h5 class="mb-0">
-            Data Pembimbing PKL
-        </h5>
-
+    <div class="card-header">
+        <strong>Daftar Pembimbing PKL</strong>
     </div>
 
-    <div class="card-body p-3">
+    <div class="card-body">
 
-        <div class="accordion"
-             id="accordionGuru">
+        <div class="table-responsive">
 
-        <?php foreach($guru as $g): ?>
+            <table class="table table-bordered table-striped">
 
-        <?php
+                <thead class="thead-light">
 
-        // ambil mapping guru
-        $mapping = $this->db
-            ->select('
-                distribusi_manual.*,
+                    <tr>
 
-                siswa.nama,
-                siswa.nisn,
+                        <th width="60">No</th>
 
-                kelas.nama_kelas,
+                        <th>Guru</th>
 
-                dudi.nama_dudi
-            ')
-            ->from(
-                'distribusi_manual'
-            )
+                        <th>NIP</th>
 
-            ->join(
-                'siswa',
-                'siswa.id =
-                distribusi_manual.siswa_id'
-            )
+                        <th width="150">
+                            Kuota
+                        </th>
 
-            ->join(
-                'kelas',
-                'kelas.id =
-                distribusi_manual.kelas_id'
-            )
+                        <th width="150">
+                            Terpilih
+                        </th>
 
-            ->join(
-                'dudi',
-                'dudi.id =
-                siswa.dudi_id',
-                'left'
-            )
+                        <th width="180">
+                            Aksi
+                        </th>
 
-            ->where(
-                'guru_id',
-                $g->id
-            )
+                    </tr>
 
-            ->order_by(
-                'kelas.nama_kelas',
-                'ASC'
-            )
+                </thead>
 
-            ->get()
-            ->result();
+                <tbody>
 
-        // group per kelas
-        $kelas_group = [];
+                <?php if(empty($pembimbing)): ?>
 
-        foreach(
-            $mapping
-            as $m
-        ){
+                    <tr>
 
-            $kelas_group[
-                $m->nama_kelas
-            ][] = $m;
-        }
+                        <td colspan="6"
+                            class="text-center">
 
-        $total_siswa =
-            count($mapping);
+                            Belum ada data pembimbing.
 
-        $jumlah_kelas =
-            count(
-                $kelas_group
-            );
+                        </td>
 
-        ?>
-
-        <div class="card shadow-sm mb-3 border-0">
-
-            <div class="card-header bg-light">
-
-                <div class="d-flex justify-content-between align-items-center">
-
-                    <button
-                        class="btn btn-link text-left p-0"
-
-                        type="button"
-
-                        data-toggle="collapse"
-
-                        data-target="#guru<?= $g->id ?>">
-
-                        <h5 class="mb-1">
-
-                            <?= $g->nama_guru ?>
-
-                        </h5>
-
-                        <small class="text-muted">
-
-                            <?= $total_siswa ?>
-
-                            siswa •
-
-                            <?= $jumlah_kelas ?>
-
-                            kelas
-
-                        </small>
-
-                    </button>
-
-                    <a href="<?= base_url(
-                        'distribusimanual/mapping/'
-                        .$g->id
-                    ) ?>"
-
-                    class="btn btn-warning btn-sm">
-
-                        <i class="fas fa-edit"></i>
-
-                        Kelola Mapping
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div id="guru<?= $g->id ?>"
-                 class="collapse"
-                 data-parent="#accordionGuru">
-
-                <div class="card-body">
-
-                <?php if(!empty($kelas_group)): ?>
-
-                    <div class="accordion"
-                         id="accordionKelas<?= $g->id ?>">
-
-                    <?php
-                    $no_kelas = 1;
-
-                    foreach(
-                        $kelas_group
-                        as $kelas
-                        => $rows
-                    ):
-                    ?>
-
-                    <div class="card border mb-2">
-
-                        <div class="card-header bg-white p-2">
-
-                            <button
-                                class="btn btn-link text-left p-0"
-
-                                type="button"
-
-                                data-toggle="collapse"
-
-                                data-target="#kelas<?= $g->id ?><?= $no_kelas ?>">
-
-                                <strong>
-
-                                    <?= $kelas ?>
-
-                                </strong>
-
-                                <span class="badge badge-primary ml-2">
-
-                                    <?= count($rows) ?>
-
-                                    siswa
-
-                                </span>
-
-                            </button>
-
-                        </div>
-
-                        <div id="kelas<?= $g->id ?><?= $no_kelas ?>"
-                             class="collapse"
-                             data-parent="#accordionKelas<?= $g->id ?>">
-
-                            <div class="table-responsive">
-
-                                <table class="table table-sm table-bordered mb-0">
-
-                                    <thead class="thead-light">
-
-                                        <tr>
-
-                                            <th width="50">
-                                                No
-                                            </th>
-
-                                            <th>
-                                                Nama Siswa
-                                            </th>
-
-                                            <th>
-                                                DUDI
-                                            </th>
-
-                                            <th>
-                                                NISN
-                                            </th>
-
-                                        </tr>
-
-                                    </thead>
-
-                                    <tbody>
-
-                                    <?php
-                                    $no = 1;
-
-                                    foreach(
-                                        $rows
-                                        as $r
-                                    ):
-                                    ?>
-
-                                    <tr>
-
-                                        <td>
-                                            <?= $no++ ?>
-                                        </td>
-
-                                        <td>
-                                            <?= $r->nama ?>
-                                        </td>
-
-                                        <td>
-
-                                            <?= !empty(
-                                                $r->nama_dudi
-                                            )
-
-                                            ?
-
-                                            $r->nama_dudi
-
-                                            :
-
-                                            '<span class="text-danger">
-                                            Belum Mapping
-                                            </span>' ?>
-
-                                        </td>
-
-                                        <td>
-                                            <?= $r->nisn ?>
-                                        </td>
-
-                                    </tr>
-
-                                    <?php endforeach; ?>
-
-                                    </tbody>
-
-                                </table>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                    <?php
-                    $no_kelas++;
-                    endforeach;
-                    ?>
-
-                    </div>
+                    </tr>
 
                 <?php else: ?>
 
-                    <div class="alert alert-warning mb-0">
+                    <?php
+                    $no = 1;
 
-                        Belum ada mapping siswa
+                    foreach($pembimbing as $p):
 
-                    </div>
+                        $terpilih = $this->db
+                            ->where(
+                                'guru_id',
+                                $p->guru_id
+                            )
+                            ->count_all_results(
+                                'distribusi_manual'
+                            );
+
+                        $kelas = $this->db
+                            ->select('kelas.nama_kelas')
+                            ->from('pembimbing_pkl')
+                            ->join(
+                                'kelas',
+                                'kelas.id = pembimbing_pkl.kelas_id'
+                            )
+                            ->where(
+                                'pembimbing_pkl.guru_id',
+                                $p->guru_id
+                            )
+                            ->get()
+                            ->result();
+
+                        $list_kelas = [];
+
+                        foreach($kelas as $k){
+
+                            $list_kelas[] =
+                                $k->nama_kelas;
+                        }
+                    ?>
+
+                    <tr>
+
+                        <td>
+                            <?= $no++ ?>
+                        </td>
+
+                        <td>
+
+                            <strong>
+                                <?= $p->nama_guru ?>
+                            </strong>
+
+                            <br>
+
+                            <small class="text-muted">
+
+                                <?= implode(
+                                    ', ',
+                                    $list_kelas
+                                ) ?>
+
+                            </small>
+
+                        </td>
+
+                        <td>
+                            <?= $p->nip ?>
+                        </td>
+
+                        <td>
+
+                            <span class="badge badge-primary">
+
+                                <?= $p->kuota ?>
+
+                                siswa
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <span class="badge badge-success">
+
+                                <?= $terpilih ?>
+
+                                siswa
+
+                            </span>
+
+                        </td>
+
+                        <td>
+
+                            <a href="<?= base_url(
+                                'distribusimanual/mapping/' .
+                                $p->guru_id
+                            ) ?>"
+                            class="btn btn-warning btn-sm">
+
+                                <i class="fa fa-users"></i>
+
+                                Mapping Siswa
+
+                            </a>
+
+                        </td>
+
+                    </tr>
+
+                    <?php endforeach; ?>
 
                 <?php endif; ?>
 
-                </div>
+                </tbody>
 
-            </div>
-
-        </div>
-
-        <?php endforeach; ?>
+            </table>
 
         </div>
 
     </div>
 
 </div>
+

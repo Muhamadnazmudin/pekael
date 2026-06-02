@@ -172,11 +172,11 @@ $sistem_menu = in_array($menu, [
 
                 <a class="collapse-item <?= ($menu == 'pembimbing') ? 'active' : '' ?>"
                    href="<?= base_url('pembimbing') ?>">
-                    Pembimbing PKL
+                    Pembimbing (Koef)
                 </a>
                 <a class="collapse-item <?= ($menu == 'pembimbingkelas') ? 'active' : '' ?>"
    href="<?= base_url('pembimbingkelas') ?>">
-    Pembimbing PKL Per Kelas
+    Pembimbing (propKelas)
 </a>
             </div>
         </div>
@@ -192,7 +192,7 @@ $sistem_menu = in_array($menu, [
            aria-expanded="<?= $distribusi_menu ? 'true' : 'false' ?>">
 
             <i class="fas fa-random"></i>
-            <span>Distribusi & Penempatan</span>
+            <span>Distrib & Penempatan</span>
         </a>
 
         <div id="distribusiMenu"
@@ -203,12 +203,12 @@ $sistem_menu = in_array($menu, [
 
         <a class="collapse-item <?= ($menu == 'distribusimanual') ? 'active' : '' ?>"
            href="<?= base_url('distribusimanual') ?>">
-            Distribusi Juknis
+            Distribusi (koef)
         </a>
 
         <a class="collapse-item <?= ($menu == 'distribusi_proporsional') ? 'active' : '' ?>"
            href="<?= base_url('distribusi_proporsional') ?>">
-            Distribusi Proporsional
+            Distribusi (propKelas)
         </a>
 
     </div>

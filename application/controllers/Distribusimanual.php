@@ -39,21 +39,26 @@ class Distribusimanual extends CI_Controller {
             )
             ->row();
 
-        $data['guru'] = $this->db
-            ->distinct()
-            ->select('guru.*')
-            ->from('pembagian_jam')
-            ->join(
-                'guru',
-                'guru.id =
-                pembagian_jam.guru_id'
-            )
-            ->where(
-                'pembagian_jam.tahun_id',
-                $tahun->id
-            )
-            ->get()
-            ->result();
+        $data['pembimbing'] = $this->db
+    ->select('
+        guru.id as guru_id,
+        guru.nama_guru,
+        guru.nip,
+        SUM(pembimbing_pkl.jumlah_bimbingan) as kuota
+    ')
+    ->from('pembimbing_pkl')
+    ->join(
+        'guru',
+        'guru.id = pembimbing_pkl.guru_id'
+    )
+    ->where(
+        'pembimbing_pkl.tahun_id',
+        $tahun->id
+    )
+    ->group_by('guru.id')
+    ->order_by('guru.nama_guru','ASC')
+    ->get()
+    ->result();
 
         template(
             'admin/distribusi_manual/index',
