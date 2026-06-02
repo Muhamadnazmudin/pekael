@@ -13,6 +13,7 @@
 
                 <i class="fa fa-file-excel"></i>
                 Download Excel
+
             </a>
 
             <a href="<?= base_url('rekappkl/pdf') ?>"
@@ -20,59 +21,77 @@
 
                 <i class="fa fa-file-pdf"></i>
                 Download PDF
+
             </a>
 
         </div>
 
         <div class="table-responsive">
 
-            <table class="table table-hover table-bordered">
+            <table class="table table-bordered table-hover">
 
                 <thead class="thead-light">
 
                     <tr class="text-center">
-                        <th width="50">No</th>
-                        <th>Nama Siswa</th>
-                        <th>Kelas</th>
-                        <th>Nama DUDI</th>
-                        <th>Nama Pembimbing</th>
+
+                        <tr class="text-center">
+    <th width="60">No</th>
+    <th>Nama Siswa</th>
+    <th>NISN</th>
+    <th>Kelas</th>
+    <th>Nama DUDI</th>
+    <th>Nomor MoU</th>
+    <th>Judul PKS</th>
+    <th>Nama Pembimbing</th>
+</tr>
                     </tr>
 
                 </thead>
 
-               <tbody>
+                <tbody>
 
-    <?php $no = 1; ?>
+                    <?php if(empty($rekap)): ?>
 
-    <?php foreach($rekap as $r): ?>
+                        <tr>
+                            <td colspan="8" class="text-center">
+    Data tidak ditemukan
+</td>
+                        </tr>
 
-    <tr>
+                    <?php else: ?>
 
-        <td class="text-center">
-            <?= $no++ ?>
-        </td>
+                        <?php $no = 1; ?>
 
-        <td>
-            <?= $r['nama'] ?>
-        </td>
+                        <?php foreach($rekap as $r): ?>
 
-        <td>
-            <?= $r['nama_kelas'] ?? '-' ?>
-        </td>
+                            <tr>
 
-        <td>
-            <?= $r['nama_dudi'] ?? '-' ?>
-        </td>
+    <td class="text-center">
+        <?= $no++ ?>
+    </td>
 
-        <td>
-            <?= $r['nama_guru'] ?? '-' ?>
-        </td>
+    <td><?= $r['nama'] ?></td>
 
-    </tr>
+    <td><?= $r['nisn'] ?></td>
 
-    <?php endforeach; ?>
+    <td><?= $r['kelas'] ?? '-' ?></td>
 
-</tbody>
+    <td><?= $r['dudi'] ?? '-' ?></td>
+
+    <td><?= $r['nomor_mou'] ?? '-' ?></td>
+
+    <td><?= $r['judul_pks'] ?? '-' ?></td>
+
+    <td><?= $r['pembimbing'] ?? '-' ?></td>
+
+</tr>
+
+                        <?php endforeach; ?>
+
+                    <?php endif; ?>
+
+                </tbody>
+
             </table>
 
         </div>

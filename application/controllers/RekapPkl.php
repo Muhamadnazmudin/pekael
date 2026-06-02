@@ -16,8 +16,7 @@ class RekapPkl extends CI_Controller
 
     public function index()
     {
-        $data['rekap'] =
-            $this->M_rekap_pkl->get_rekap();
+        $data['rekap'] = $this->M_rekap_pkl->get_rekap();
 
         $data['laporan_menu'] = true;
         $data['sub'] = 'rekap';
@@ -30,40 +29,50 @@ class RekapPkl extends CI_Controller
 
     public function excel()
     {
-        $rekap =
-            $this->M_rekap_pkl->get_rekap();
+        $rekap = $this->M_rekap_pkl->get_rekap();
 
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
 
-        $sheet->setCellValue('A1', 'REKAP PKL');
-        $sheet->mergeCells('A1:E1');
+        foreach(range('A','H') as $col){
+    $sheet->getColumnDimension($col)->setAutoSize(true);
+}
+        $sheet->setCellValue('A1', 'REKAP DATA PKL');
 
         $sheet->fromArray([
-            'No',
-            'Nama Siswa',
-            'Kelas',
-            'Nama DUDI',
-            'Nama Pembimbing'
-        ], null, 'A3');
+    'No',
+    'Nama Siswa',
+    'NISN',
+    'Kelas',
+    'Nama DUDI',
+    'Nomor MoU',
+    'Judul PKS',
+    'Pembimbing'
+], null, 'A3');
 
         $row = 4;
-        $no = 1;
+        $no  = 1;
 
         foreach ($rekap as $r) {
 
             $sheet->setCellValue('A'.$row, $no++);
-            $sheet->setCellValue('B'.$row, $r['nama']);
-            $sheet->setCellValue('C'.$row, $r['kelas']);
-            $sheet->setCellValue('D'.$row, $r['dudi']);
-            $sheet->setCellValue('E'.$row, $r['pembimbing']);
+$sheet->setCellValue('B'.$row, $r['nama']);
+$sheet->setCellValue('C'.$row, $r['nisn']);
+$sheet->setCellValue('D'.$row, $r['kelas']);
+$sheet->setCellValue('E'.$row, $r['dudi']);
+$sheet->setCellValue('F'.$row, $r['nomor_mou']);
+$sheet->setCellValue('G'.$row, $r['judul_pks']);
+$sheet->setCellValue('H'.$row, $r['pembimbing']);
 
             $row++;
         }
 
-        header('Content-Type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment;filename="rekap_pkl.xlsx"');
-        header('Cache-Control: max-age=0');
+        foreach(range('A','F') as $col){
+            $sheet->getColumnDimension($col)->setAutoSize(true);
+        }
+
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="rekap_pkl.xlsx"');
 
         $writer = new Xlsx($spreadsheet);
         $writer->save('php://output');
@@ -71,8 +80,7 @@ class RekapPkl extends CI_Controller
 
     public function pdf()
     {
-        $data['rekap'] =
-            $this->M_rekap_pkl->get_rekap();
+        $data['rekap'] = $this->M_rekap_pkl->get_rekap();
 
         $html = $this->load->view(
             'admin/rekap_pkl/pdf',

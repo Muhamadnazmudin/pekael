@@ -7,17 +7,19 @@ class M_rekap_pkl extends CI_Model
     {
        return $this->db
     ->select('
-        distribusi_manual.id,
+    distribusi_manual.id,
 
-        siswa.nama,
-        siswa.nisn,
+    siswa.nama,
+    siswa.nisn,
 
-        kelas.nama_kelas AS kelas,
+    kelas.nama_kelas AS kelas,
 
-        guru.nama_guru AS pembimbing,
+    guru.nama_guru AS pembimbing,
 
-        dudi.nama_dudi AS dudi
-    ')
+    dudi.nama_dudi AS dudi,
+    dudi.nomor_mou,
+    dudi.judul_pks
+')
     ->from('distribusi_manual')
 
     ->join(

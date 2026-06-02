@@ -10,7 +10,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
         <div>
-            <h1 class="h3 mb-1 font-weight-bold text-gray-100">
+            <h1 class="h3 mb-1 font-weight-bold text-gray-800">
                 Dashboard PEKAEL
             </h1>
 
@@ -38,7 +38,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                 Total Guru
                             </div>
 
-                            <div class="h2 font-weight-bold text-gray-100">
+                            <div class="h2 font-weight-bold text-gray-800">
                                 <?= number_format($total_guru) ?>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                 Siswa PKL Kelas XII
                             </div>
 
-                            <div class="h2 font-weight-bold text-gray-100">
+                            <div class="h2 font-weight-bold text-gray-800">
                                 <?= number_format($total_siswa) ?>
                             </div>
                         </div>
@@ -82,7 +82,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                 Guru Sebagai Pembimbing
                             </div>
 
-                            <div class="h2 font-weight-bold text-gray-100">
+                            <div class="h2 font-weight-bold text-gray-800">
                                 <?= number_format($guru_pembimbing) ?>
                             </div>
                         </div>
@@ -133,7 +133,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                         Jumlah DUDI
                     </div>
 
-                    <div class="h2 font-weight-bold text-gray-100">
+                    <div class="h2 font-weight-bold text-gray-800">
                         <?= number_format($total_dudi) ?>
                     </div>
 
@@ -157,7 +157,7 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
                                 Rombel kelas XII yang PKL
                             </div>
 
-                            <div class="h2 font-weight-bold text-gray-100">
+                            <div class="h2 font-weight-bold text-gray-800">
                                 <?= $total_rombel ?>
                             </div>
                         </div>
