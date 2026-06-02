@@ -43,28 +43,10 @@ class M_laporan_pembimbing extends CI_Model
 
         foreach ($kelas_guru as $k) {
 
-            // cek manual dulu
-$manual = $this->db
+            $jumlah_siswa = $this->db
     ->where('guru_id', $g->id)
     ->where('kelas_id', $k->kelas_id)
     ->count_all_results('distribusi_manual');
-
-if ($manual > 0) {
-
-    // kalau ada mapping manual
-    // pakai manual sebagai hasil final
-    $jumlah_siswa = $manual;
-
-} else {
-
-    // kalau belum manual
-    // ambil hasil generate otomatis
-    $jumlah_siswa = $this->db
-        ->where('guru_id', $g->id)
-        ->where('kelas_id', $k->kelas_id)
-        ->count_all_results('pembimbing_pkl');
-}
-
             $kelas_data[] = [
                 'nama_kelas' => $k->nama_kelas,
                 'jam' => $k->jumlah_jam,
