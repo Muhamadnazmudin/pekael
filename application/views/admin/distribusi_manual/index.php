@@ -13,7 +13,7 @@
 <div class="card shadow">
 
     <div class="card-header">
-        <strong>Daftar Pembimbing PKL</strong>
+        <strong>Daftar Pembimbing PKL (berdasarkan juknis(koefisien))</strong>
     </div>
 
     <div class="card-body">

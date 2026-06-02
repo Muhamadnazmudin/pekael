@@ -8,7 +8,7 @@
 
     Mapping siswa dilakukan secara manual sesuai
     kuota pembimbing yang telah dihitung pada
-    menu Pembimbing PKL Per Kelas.
+    menu Pembimbing (Koef).
 
 </div>
 
@@ -17,7 +17,7 @@
     <div class="card-header">
 
         <strong>
-            Daftar Pembimbing PKL
+            Daftar Pembimbing PKL (Berdasarkan Proporsional Kelas) siswaperkelas/46*jm guruperkelas
         </strong>
 
     </div>
@@ -66,7 +66,7 @@
                             Belum ada data pembimbing.
 
                             Silakan generate terlebih dahulu
-                            pada menu Pembimbing PKL Per Kelas.
+                            pada menu Pembimbing PKL (Koef).
 
                         </td>
 
