@@ -38,17 +38,21 @@
 
                         <th>NIP</th>
 
-                        <th width="150">
-                            Kuota
-                        </th>
+                        <th width="120">
+    Kuota
+</th>
 
-                        <th width="150">
-                            Terpilih
-                        </th>
+<th width="120">
+    Total Jam
+</th>
 
-                        <th width="150">
-                            Aksi
-                        </th>
+<th width="120">
+    Terpilih
+</th>
+
+<th width="150">
+    Aksi
+</th>
 
                     </tr>
 
@@ -60,7 +64,7 @@
 
                     <tr>
 
-                        <td colspan="6"
+                        <td colspan="7"
                             class="text-center">
 
                             Belum ada data pembimbing.
@@ -110,27 +114,39 @@
 
                     <td>
 
-                        <span class="badge badge-primary">
+    <span class="badge badge-primary">
 
-                            <?= $d->kuota ?>
+        <?= $d->kuota ?>
 
-                            siswa
+        siswa
 
-                        </span>
+    </span>
 
-                    </td>
+</td>
 
-                    <td>
+<td>
 
-                        <span class="badge badge-success">
+    <span class="badge badge-info">
 
-                            <?= $terpilih ?>
+        <?= rtrim(rtrim($d->total_jam, '0'), '.') ?>
 
-                            siswa
+        JP
 
-                        </span>
+    </span>
 
-                    </td>
+</td>
+
+<td>
+
+    <span class="badge badge-success">
+
+        <?= $terpilih ?>
+
+        siswa
+
+    </span>
+
+</td>
 
                     <td>
 
