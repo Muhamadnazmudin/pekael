@@ -1,4 +1,3 @@
-
 <h1 class="h3 mb-4 text-gray-800">
     Distribusi Manual
 </h1>
@@ -23,29 +22,15 @@
             <table class="table table-bordered table-striped">
 
                 <thead class="thead-light">
-
                     <tr>
-
                         <th width="60">No</th>
-
                         <th>Guru</th>
-
                         <th>NIP</th>
-
-                        <th width="150">
-                            Kuota
-                        </th>
-
-                        <th width="150">
-                            Terpilih
-                        </th>
-
-                        <th width="180">
-                            Aksi
-                        </th>
-
+                        <th width="120">Kuota</th>
+                        <th width="120">Total Jam</th>
+                        <th width="120">Terpilih</th>
+                        <th width="180">Aksi</th>
                     </tr>
-
                 </thead>
 
                 <tbody>
@@ -53,14 +38,9 @@
                 <?php if(empty($pembimbing)): ?>
 
                     <tr>
-
-                        <td colspan="6"
-                            class="text-center">
-
+                        <td colspan="7" class="text-center">
                             Belum ada data pembimbing.
-
                         </td>
-
                     </tr>
 
                 <?php else: ?>
@@ -71,13 +51,8 @@
                     foreach($pembimbing as $p):
 
                         $terpilih = $this->db
-                            ->where(
-                                'guru_id',
-                                $p->guru_id
-                            )
-                            ->count_all_results(
-                                'distribusi_manual'
-                            );
+                            ->where('guru_id', $p->guru_id)
+                            ->count_all_results('distribusi_manual');
 
                         $kelas = $this->db
                             ->select('kelas.nama_kelas')
@@ -94,12 +69,22 @@
                             ->result();
 
                         $list_kelas = [];
+                            $total_jam = $this->db
+    ->select_sum('jumlah_jam')
+    ->where('guru_id', $p->guru_id)
+    ->get('pembagian_jam')
+    ->row()
+    ->jumlah_jam;
 
+$total_jam = $total_jam ? $total_jam : 0;
                         foreach($kelas as $k){
-
-                            $list_kelas[] =
-                                $k->nama_kelas;
+                            $list_kelas[] = $k->nama_kelas;
                         }
+
+                        // GANTI sesuai field total jam yang ada
+                        $total_jam = isset($p->jumlah_jam)
+                            ? $p->jumlah_jam
+                            : 0;
                     ?>
 
                     <tr>
@@ -117,12 +102,7 @@
                             <br>
 
                             <small class="text-muted">
-
-                                <?= implode(
-                                    ', ',
-                                    $list_kelas
-                                ) ?>
-
+                                <?= implode(', ', $list_kelas) ?>
                             </small>
 
                         </td>
@@ -132,44 +112,34 @@
                         </td>
 
                         <td>
+    <span class="badge badge-primary">
+        <?= $p->kuota ?> siswa
+    </span>
+</td>
 
-                            <span class="badge badge-primary">
+<td>
+    <span class="badge badge-info">
+        <?= $p->total_jam ?> JP
+    </span>
+</td>
 
-                                <?= $p->kuota ?>
+<td>
+    <span class="badge badge-success">
+        <?= $terpilih ?> siswa
+    </span>
+</td>
 
-                                siswa
+<td>
+    <a href="<?= base_url(
+        'distribusimanual/mapping/' . $p->guru_id
+    ) ?>"
+    class="btn btn-warning btn-sm">
 
-                            </span>
+        <i class="fa fa-users"></i>
+        Mapping Siswa
 
-                        </td>
-
-                        <td>
-
-                            <span class="badge badge-success">
-
-                                <?= $terpilih ?>
-
-                                siswa
-
-                            </span>
-
-                        </td>
-
-                        <td>
-
-                            <a href="<?= base_url(
-                                'distribusimanual/mapping/' .
-                                $p->guru_id
-                            ) ?>"
-                            class="btn btn-warning btn-sm">
-
-                                <i class="fa fa-users"></i>
-
-                                Mapping Siswa
-
-                            </a>
-
-                        </td>
+    </a>
+</td>
 
                     </tr>
 
@@ -186,4 +156,3 @@
     </div>
 
 </div>
-

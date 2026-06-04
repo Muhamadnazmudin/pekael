@@ -44,7 +44,8 @@ class Distribusimanual extends CI_Controller {
         guru.id as guru_id,
         guru.nama_guru,
         guru.nip,
-        SUM(pembimbing_pkl.jumlah_bimbingan) as kuota
+        SUM(pembimbing_pkl.jumlah_bimbingan) as kuota,
+        SUM(pembimbing_pkl.total_jam) as total_jam
     ')
     ->from('pembimbing_pkl')
     ->join(
