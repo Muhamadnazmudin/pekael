@@ -268,9 +268,20 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
 
                             <?php else: ?>
 
-                                <?php $no = 1; ?>
+                                <?php
+$no = 1;
+$total_siswa_monitoring = 0;
+$total_belum_dudi_monitoring = 0;
+$total_belum_pembimbing_monitoring = 0;
+?>
 
-                                <?php foreach($monitoring_rombel as $r): ?>
+<?php foreach($monitoring_rombel as $r): ?>
+
+<?php
+$total_siswa_monitoring += $r->total_siswa;
+$total_belum_dudi_monitoring += $r->belum_dudi;
+$total_belum_pembimbing_monitoring += $r->belum_pembimbing;
+?>
 
                                     <?php
                                         $sudah_dudi =
@@ -384,9 +395,20 @@ $total_rombel_semua = isset($total_rombel_semua) ? $total_rombel_semua : 0;
 
                                 <?php endforeach; ?>
 
-                            <?php endif; ?>
+<?php endif; ?>
 
-                        </tbody>
+<tr class="font-weight-bold">
+    <td colspan="2" class="text-center">TOTAL</td>
+    <td><?= $total_siswa_monitoring ?></td>
+    <td><?= $total_belum_dudi_monitoring ?></td>
+    <td><?= $total_belum_pembimbing_monitoring ?></td>
+    <td>-</td>
+    <td>-</td>
+</tr>
+
+</tbody>
+
+</table>
 
                     </table>
 <?php foreach($monitoring_rombel as $r): ?>
