@@ -73,7 +73,7 @@
                 Generate Pembimbing
             </h5>
 
-            <a href="<?= base_url(
+            <!-- <a href="<?= base_url(
                 'pembimbing/generate_semua'
             ) ?>"
             class="btn btn-success">
@@ -82,7 +82,7 @@
 
                 Generate Semua Kelas
 
-            </a>
+            </a> -->
 
         </div>
 

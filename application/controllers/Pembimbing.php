@@ -367,6 +367,74 @@ $desimal =
         $jumlah_siswa
         -
         $total_awal;
+        // ======================
+if($sisa < 0){
+
+    // total hasil koefisien
+    $total_hasil = 0;
+
+    foreach($data_generate as $g){
+
+        $total_hasil +=
+            $g['jumlah_bimbingan'];
+    }
+
+    // normalisasi proporsional
+    $total_baru = 0;
+
+    foreach($data_generate as $k => $g){
+
+        $ideal =
+            (
+                $g['jumlah_bimbingan']
+                /
+                $total_hasil
+            )
+            *
+            $jumlah_siswa;
+
+        $data_generate[$k]['jumlah_bimbingan']
+            = floor($ideal);
+
+        $data_generate[$k]['sisa_desimal']
+            = $ideal - floor($ideal);
+
+        $total_baru +=
+            $data_generate[$k]['jumlah_bimbingan'];
+    }
+
+    // sisa pembulatan
+    $sisa_bagi =
+        $jumlah_siswa
+        -
+        $total_baru;
+
+    usort(
+        $data_generate,
+        function($a, $b){
+
+            return
+                $b['sisa_desimal']
+                <=>
+                $a['sisa_desimal'];
+        }
+    );
+
+    while($sisa_bagi > 0){
+
+        foreach($data_generate as $k => $g){
+
+            $data_generate[$k]
+            ['jumlah_bimbingan']++;
+
+            $sisa_bagi--;
+
+            if($sisa_bagi <= 0){
+                break 2;
+            }
+        }
+    }
+}
 
     // pecahan terbesar
     usort(
@@ -440,7 +508,7 @@ $desimal =
         $data_generate
         as $d
     ){
-
+unset($d['sisa_desimal']);
         unset(
     $d['desimal']
 );
