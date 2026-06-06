@@ -43,18 +43,32 @@ class M_laporan_pembimbing extends CI_Model
 
         foreach ($kelas_guru as $k) {
 
-            $jumlah_siswa = $this->db
-    ->where('guru_id', $g->id)
-    ->where('kelas_id', $k->kelas_id)
-    ->count_all_results('distribusi_manual');
-            $kelas_data[] = [
-                'nama_kelas' => $k->nama_kelas,
-                'jam' => $k->jumlah_jam,
-                'siswa' => $jumlah_siswa
-            ];
+            $siswa = $this->db
+    ->select('siswa.nama')
+    ->from('distribusi_manual')
+    ->join('siswa', 'siswa.id = distribusi_manual.siswa_id')
+    ->where('distribusi_manual.guru_id', $g->id)
+    ->where('distribusi_manual.kelas_id', $k->kelas_id)
+    ->get()
+    ->result();
 
-            $total_jam += $k->jumlah_jam;
-            $total_siswa += $jumlah_siswa;
+$nama_siswa = [];
+
+foreach ($siswa as $s) {
+    $nama_siswa[] = $s->nama;
+}
+
+$jumlah_siswa = count($nama_siswa);
+
+$kelas_data[] = [
+    'nama_kelas' => $k->nama_kelas,
+    'jam'        => $k->jumlah_jam,
+    'siswa'      => $jumlah_siswa,
+    'nama_siswa' => $nama_siswa
+];
+
+$total_jam += $k->jumlah_jam;
+$total_siswa += $jumlah_siswa;
         }
 
         $hasil[] = [

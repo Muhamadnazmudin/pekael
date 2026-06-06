@@ -15,6 +15,14 @@
 
         <?php foreach ($laporan as $row): ?>
 
+            <?php
+            $total_rowspan = 0;
+
+            foreach ($row['kelas'] as $k) {
+                $total_rowspan += max(1, count($k['nama_siswa']));
+            }
+            ?>
+
             <div class="card shadow-sm mb-4 border-left-info">
 
                 <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -45,77 +53,80 @@
                         <table class="table table-bordered table-hover">
 
                             <thead class="thead-light">
-
                                 <tr class="text-center">
-
-                                    <th rowspan="2"
-                                        class="align-middle"
-                                        width="70">
-                                        No
-                                    </th>
-
-                                    <th rowspan="2"
-                                        class="align-middle">
-                                        Nama Guru
-                                    </th>
-
-                                    <th colspan="<?= count($row['kelas']) ?>"
-                                        class="bg-primary text-white">
-                                        Jumlah Jam
-                                    </th>
-
-                                    <th colspan="<?= count($row['kelas']) ?>"
-                                        class="bg-success text-white">
-                                        Jumlah Siswa Bimbingan Per Kelas
-                                    </th>
-
+                                    <th width="60">No</th>
+                                    <th>Nama Guru</th>
+                                    <th width="120">Jumlah Jam</th>
+                                    <th>Kelas</th>
+                                    <th width="120">Jumlah Siswa</th>
+                                    <th>Nama Siswa</th>
                                 </tr>
-
-                                <tr class="text-center">
-
-                                    <?php foreach ($row['kelas'] as $k): ?>
-                                        <th>
-                                            <?= $k['nama_kelas'] ?>
-                                        </th>
-                                    <?php endforeach; ?>
-
-                                    <?php foreach ($row['kelas'] as $k): ?>
-                                        <th>
-                                            <?= $k['nama_kelas'] ?>
-                                        </th>
-                                    <?php endforeach; ?>
-
-                                </tr>
-
                             </thead>
 
                             <tbody>
 
-                                <tr>
+                                <?php
+                                $guru_printed = false;
+                                ?>
 
-                                    <td class="text-center align-middle">
-                                        <?= $no++ ?>
-                                    </td>
+                                <?php foreach ($row['kelas'] as $k): ?>
 
-                                    <td class="align-middle font-weight-bold">
-                                        <?= $row['guru'] ?>
-                                    </td>
+                                    <?php
+                                    $siswa = !empty($k['nama_siswa'])
+                                        ? $k['nama_siswa']
+                                        : ['-'];
 
-                                    <!-- jumlah jam -->
-                                    <?php foreach ($row['kelas'] as $k): ?>
-                                        <td class="text-center align-middle">
-                                            <?= $k['jam'] ?>
-                                        </td>
+                                    $rowspan_kelas = count($siswa);
+                                    ?>
+
+                                    <?php foreach ($siswa as $i => $nama): ?>
+
+                                        <tr>
+
+                                            <?php if (!$guru_printed && $i == 0): ?>
+
+                                                <td rowspan="<?= $total_rowspan ?>"
+                                                    class="text-center align-middle">
+                                                    <?= $no ?>
+                                                </td>
+
+                                                <td rowspan="<?= $total_rowspan ?>"
+                                                    class="align-middle font-weight-bold">
+                                                    <?= $row['guru'] ?>
+                                                </td>
+
+                                                <?php $guru_printed = true; ?>
+
+                                            <?php endif; ?>
+
+                                            <?php if ($i == 0): ?>
+
+                                                <td rowspan="<?= $rowspan_kelas ?>"
+                                                    class="text-center align-middle">
+                                                    <?= $k['jam'] ?>
+                                                </td>
+
+                                                <td rowspan="<?= $rowspan_kelas ?>"
+                                                    class="align-middle">
+                                                    <?= $k['nama_kelas'] ?>
+                                                </td>
+
+                                                <td rowspan="<?= $rowspan_kelas ?>"
+                                                    class="text-center align-middle">
+                                                    <?= $k['siswa'] ?>
+                                                </td>
+
+                                            <?php endif; ?>
+
+                                            <td>
+                                                <?= $nama ?>
+                                            </td>
+
+                                        </tr>
+
                                     <?php endforeach; ?>
 
-                                    <!-- jumlah siswa -->
-                                    <?php foreach ($row['kelas'] as $k): ?>
-                                        <td class="text-center align-middle">
-                                            <?= $k['siswa'] ?>
-                                        </td>
-                                    <?php endforeach; ?>
-
-                                </tr>
+                                <?php endforeach; ?>
 
                             </tbody>
 
@@ -126,6 +137,8 @@
                 </div>
 
             </div>
+
+            <?php $no++; ?>
 
         <?php endforeach; ?>
 
