@@ -32,6 +32,7 @@ $distribusi_menu = in_array($menu, [
 ]);
 
 $laporan_menu = ($menu == 'laporan');
+$laporan_propor_menu = ($menu == 'laporan_propor');
 
 $sistem_menu = in_array($menu, [
     'pengaturan',
@@ -251,6 +252,40 @@ $sistem_menu = in_array($menu, [
         </div>
     </li>
 
+    <!-- LAPORAN PROPORSIONAL -->
+<li class="nav-item <?= $laporan_propor_menu ? 'active' : '' ?>">
+
+    <a class="nav-link collapsed"
+       href="#"
+       data-toggle="collapse"
+       data-target="#laporanProporMenu"
+       aria-expanded="<?= $laporan_propor_menu ? 'true' : 'false' ?>">
+
+        <i class="fas fa-file-contract"></i>
+        <span>Laporan Propor</span>
+    </a>
+
+    <div id="laporanProporMenu"
+         class="collapse <?= $laporan_propor_menu ? 'show' : '' ?>"
+         data-parent="#accordionSidebar">
+
+        <div class="bg-white py-2 collapse-inner rounded">
+
+            <a class="collapse-item <?= ($sub == 'pembimbing') ? 'active' : '' ?>"
+               href="<?= base_url('laporan_propor/pembimbing') ?>">
+                Cetak Pembimbing
+            </a>
+
+            <a class="collapse-item <?= ($sub == 'rekap') ? 'active' : '' ?>"
+               href="<?= base_url('laporan_propor/rekap') ?>">
+                Rekap PKL
+            </a>
+
+        </div>
+
+    </div>
+
+</li>
     <hr class="sidebar-divider">
 
     <!-- SISTEM -->
