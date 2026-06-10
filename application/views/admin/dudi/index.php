@@ -12,29 +12,37 @@
 
     <div>
 
-        <a href="<?= base_url('importdudi/template') ?>"
-           class="btn btn-success shadow-sm">
+    <a href="<?= base_url('importdudi/template') ?>"
+       class="btn btn-success shadow-sm">
 
-            <i class="fas fa-download fa-sm"></i>
-            Template
-        </a>
+        <i class="fas fa-download fa-sm"></i>
+        Template
+    </a>
 
-        <button class="btn btn-info shadow-sm"
-                data-toggle="modal"
-                data-target="#modalImport">
+    <a href="<?= base_url('dudi/export') ?>"
+   class="btn btn-success shadow-sm">
 
-            <i class="fas fa-file-excel fa-sm"></i>
-            Import
-        </button>
+    <i class="fas fa-file-excel fa-sm"></i>
+    Export
 
-        <a href="<?= base_url('dudi/tambah') ?>"
-           class="btn btn-primary shadow-sm">
+</a>
 
-            <i class="fas fa-plus fa-sm"></i>
-            Tambah DUDI
-        </a>
+    <button class="btn btn-info shadow-sm"
+            data-toggle="modal"
+            data-target="#modalImport">
 
-    </div>
+        <i class="fas fa-file-excel fa-sm"></i>
+        Import
+    </button>
+
+    <a href="<?= base_url('dudi/tambah') ?>"
+       class="btn btn-primary shadow-sm">
+
+        <i class="fas fa-plus fa-sm"></i>
+        Tambah DUDI
+    </a>
+
+</div>
 
 </div>
 
